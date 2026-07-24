@@ -3,7 +3,6 @@ const stockRef = database.ref('stocks');
 
 /**
  * 1. ดึงข้อมูลสต็อกแบบ Real-time
- * เมื่อมีการแก้ไข/ขายสินค้าจากเครื่องใดก็ตาม ฟังก์ชันนี้จะทำงานอัตโนมัติทันที
  */
 stockRef.on('value', (snapshot) => {
     const stocks = snapshot.val();
@@ -11,25 +10,32 @@ stockRef.on('value', (snapshot) => {
     
     // เรียกฟังก์ชันสำหรับแสดงผลบนตารางในหน้าเว็บ
     renderStockUI(stocks);
+}, (error) => {
+    console.error("เกิดข้อผิดพลาดในการดึงข้อมูลสต็อก:", error);
 });
 
 /**
- * 2. ฟังก์ชันแสดงผลบน UI (ตัวอย่าง)
+ * 2. ฟังก์ชันแสดงผลบน UI
  */
 function renderStockUI(stocksData) {
     const tableBody = document.getElementById('stockTableBody');
-    if (!tableBody || !stocksData) return;
+    if (!tableBody) return;
 
     tableBody.innerHTML = ''; // ล้างข้อมูลเก่า
     
+    if (!stocksData) {
+        tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center;">ยังไม่มีข้อมูลสินค้าในสต็อก</td></tr>`;
+        return;
+    }
+
     Object.keys(stocksData).forEach((key) => {
         const item = stocksData[key];
         const row = `
             <tr>
                 <td>${key}</td>
-                <td>${item.name}</td>
-                <td>${item.price} บาท</td>
-                <td>${item.quantity}</td>
+                <td>${item.name || '-'}</td>
+                <td>${item.price || 0} บาท</td>
+                <td>${item.quantity || 0}</td>
             </tr>
         `;
         tableBody.innerHTML += row;
@@ -37,9 +43,7 @@ function renderStockUI(stocksData) {
 }
 
 /**
- * 3. ฟังก์ชันตัด/อัปเดตจำนวนสต็อก (เรียกใช้เมื่อขายสินค้าหรือปรับยอด)
- * @param {string} productId - รหัสสินค้า เช่น 'item01'
- * @param {number} newQuantity - จำนวนคงเหลือใหม่
+ * 3. ฟังก์ชันอัปเดตจำนวนสต็อก
  */
 function updateStockQuantity(productId, newQuantity) {
     database.ref('stocks/' + productId).update({
@@ -59,5 +63,7 @@ function addNewProduct(productId, name, price, quantity) {
         name: name,
         price: Number(price),
         quantity: Number(quantity)
+    }).catch((error) => {
+        console.error("เกิดข้อผิดพลาดในการเพิ่มสินค้า:", error);
     });
 }
