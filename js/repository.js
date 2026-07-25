@@ -1,143 +1,77 @@
-// --- Google Sheet Repository Adapter สำหรับแทนที่ Firebase ---
-
+// --- Google Sheet Repository Adapter ---
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxAPHeJlSDBOh5GR-Bj99ZWdDdip5OLcYKw_7hFZcaSpVm_M_-sGh4bx9e7-Gu-fyQflQ/exec";
 
 class Repository {
   constructor(sheetName) {
     this.sheetName = sheetName;
   }
-}
-class Repository {
-  constructor(sheetName) {
-    this.sheetName = sheetName;
-  }
 
-  // ดึงข้อมูลทั้งหมด
   async getAll() {
     try {
-      let response = await fetch(`${WEB_APP_URL}?action=getAll&sheet=${this.sheetName}`);
-      let result = await response.json();
-      return result.status === "success" ? result.data : [];
+      const response = await fetch(`${WEB_APP_URL}?action=getAll&sheet=${this.sheetName}`);
+      const result = await response.json();
+      if (result.status === "success") {
+        return result.data;
+      }
+      console.error("Error fetching data:", result.message);
+      return [];
     } catch (error) {
-      console.error(`Error fetching ${this.sheetName}:`, error);
+      console.error("Fetch error:", error);
       return [];
     }
   }
 
-  // เพิ่มข้อมูล
-  async add(payload) {
+  async add(item) {
     try {
-      let response = await fetch(WEB_APP_URL, {
+      const response = await fetch(WEB_APP_URL, {
         method: "POST",
-        body: JSON.stringify({ action: "add", sheet: this.sheetName, payload: payload })
+        body: JSON.stringify({
+          action: "add",
+          sheet: this.sheetName,
+          payload: item
+        })
       });
-      return await response.json();
+      const result = await response.json();
+      return result.status === "success";
     } catch (error) {
-      console.error(`Error adding to ${this.sheetName}:`, error);
-      return { status: "error", message: error };
+      console.error("Add error:", error);
+      return false;
     }
   }
 
-  // อัปเดตข้อมูล
-  async update(payload) {
+  async update(item) {
     try {
-      let response = await fetch(WEB_APP_URL, {
+      const response = await fetch(WEB_APP_URL, {
         method: "POST",
-        body: JSON.stringify({ action: "update", sheet: this.sheetName, payload: payload })
+        body: JSON.stringify({
+          action: "update",
+          sheet: this.sheetName,
+          payload: item
+        })
       });
-      return await response.json();
+      const result = await response.json();
+      return result.status === "success";
     } catch (error) {
-      console.error(`Error updating ${this.sheetName}:`, error);
-      return { status: "error", message: error };
+      console.error("Update error:", error);
+      return false;
     }
   }
 
-  // ลบข้อมูล
-  async delete(payload) {
+  async delete(id) {
     try {
-      let response = await fetch(WEB_APP_URL, {
+      const response = await fetch(WEB_APP_URL, {
         method: "POST",
-        body: JSON.stringify({ action: "delete", sheet: this.sheetName, payload: payload })
+        body: JSON.stringify({
+          action: "delete",
+          sheet: this.sheetName,
+          payload: { id: id }
+        })
       });
-      return await response.json();
+      const result = await response.json();
+      return result.status === "success";
     } catch (error) {
-      console.error(`Error deleting from ${this.sheetName}:`, error);
-      return { status: "error", message: error };
+      console.error("Delete error:", error);
+      return false;
     }
   }
 }
-
-// ตัวแปรกลางที่ใช้ติดต่อกับแต่ละชีตใน Google Sheet
-const productRepo = new Repository("Products");
-const stockRepo = new Repository("Stock");
-const orderRepo = new Repository("Orders");
-
-// --- Google Sheet Repository Adapter สำหรับแทนที่ Firebase ---
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyZWvNvzfp9szkXZ7aoFybNWTzszLysJpXGIQCmkShTHoWxeEnPRtfe3aiSYm_gL2fd/exec";
-
-class Repository {
-  constructor(sheetName) {
-    this.sheetName = sheetName;
-  }
-
-  // ดึงข้อมูลทั้งหมด
-  async getAll() {
-    try {
-      let response = await fetch(`${WEB_APP_URL}?action=getAll&sheet=${this.sheetName}`);
-      let result = await response.json();
-      return result.status === "success" ? result.data : [];
-    } catch (error) {
-      console.error(`Error fetching ${this.sheetName}:`, error);
-      return [];
-    }
-  }
-
-  // เพิ่มข้อมูล
-  async add(payload) {
-    try {
-      let response = await fetch(WEB_APP_URL, {
-        method: "POST",
-        body: JSON.stringify({ action: "add", sheet: this.sheetName, payload: payload })
-      });
-      return await response.json();
-    } catch (error) {
-      console.error(`Error adding to ${this.sheetName}:`, error);
-      return { status: "error", message: error };
-    }
-  }
-
-  // อัปเดตข้อมูล
-  async update(payload) {
-    try {
-      let response = await fetch(WEB_APP_URL, {
-        method: "POST",
-        body: JSON.stringify({ action: "update", sheet: this.sheetName, payload: payload })
-      });
-      return await response.json();
-    } catch (error) {
-      console.error(`Error updating ${this.sheetName}:`, error);
-      return { status: "error", message: error };
-    }
-  }
-
-  // ลบข้อมูล
-  async delete(payload) {
-    try {
-      let response = await fetch(WEB_APP_URL, {
-        method: "POST",
-        body: JSON.stringify({ action: "delete", sheet: this.sheetName, payload: payload })
-      });
-      return await response.json();
-    } catch (error) {
-      console.error(`Error deleting from ${this.sheetName}:`, error);
-      return { status: "error", message: error };
-    }
-  }
-}
-
-// ตัวแปรกลางที่ใช้ติดต่อกับแต่ละชีตใน Google Sheet
-const productRepo = new Repository("Products");
-const stockRepo = new Repository("Stock");
-const orderRepo = new Repository("Orders");
-d8ae4f21f72cef69d4c2fa0a93bb95a6246881d9
-const customerRepo = new Repository("Customers");
