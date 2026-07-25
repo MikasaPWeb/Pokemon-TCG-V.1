@@ -1,5 +1,5 @@
 // --- Google Sheet Repository Adapter สำหรับแทนที่ Firebase ---
-const WEB_APP_URL = "ใhttps://docs.google.com/spreadsheets/d/11zsH06qfkrF3Qr3R-tTXsLNQiQGSbgQ4BExP0CM63JA/edit?usp=sharing";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxAPHeJlSDBOh5GR-Bj99ZWdDdip5OLcYKw_7hFZcaSpVm_M_-sGh4bx9e7-Gu-fyQflQ/exec";
 
 class Repository {
   constructor(sheetName) {
