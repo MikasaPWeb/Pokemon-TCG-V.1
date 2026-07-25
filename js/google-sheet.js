@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzvi4th0SPhZuBPzRQaig4yBsozw7aSujcna03mztMjgOwnjqWMxxvaIGgxyMWhgKWKzQ/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzmJyHbLHp6G-wkU-dY95QOcabNw8oq8SXyRu1hUYUeQSUvOe1Y_I0U_cIYtPhuAE7OOQ/exec";
 
 // ฟังก์ชันดึงข้อมูลทั้งหมดจาก Sheet (เทียบเท่าการ get ข้อมูล)
 async function fetchSheetData(sheetName) {

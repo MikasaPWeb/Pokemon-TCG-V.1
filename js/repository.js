@@ -1,5 +1,5 @@
 // --- Google Sheet Repository Adapter ---
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxAPHeJlSDBOh5GR-Bj99ZWdDdip5OLcYKw_7hFZcaSpVm_M_-sGh4bx9e7-Gu-fyQflQ/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzmJyHbLHp6G-wkU-dY95QOcabNw8oq8SXyRu1hUYUeQSUvOe1Y_I0U_cIYtPhuAE7OOQ/exec";
 
 class Repository {
   constructor(sheetName) {
