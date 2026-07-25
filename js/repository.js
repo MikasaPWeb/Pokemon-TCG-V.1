@@ -1,7 +1,12 @@
-<<<<<<< HEAD
 // --- Google Sheet Repository Adapter สำหรับแทนที่ Firebase ---
+
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxAPHeJlSDBOh5GR-Bj99ZWdDdip5OLcYKw_7hFZcaSpVm_M_-sGh4bx9e7-Gu-fyQflQ/exec";
 
+class Repository {
+  constructor(sheetName) {
+    this.sheetName = sheetName;
+  }
+}
 class Repository {
   constructor(sheetName) {
     this.sheetName = sheetName;
@@ -66,7 +71,7 @@ class Repository {
 const productRepo = new Repository("Products");
 const stockRepo = new Repository("Stock");
 const orderRepo = new Repository("Orders");
-=======
+
 // --- Google Sheet Repository Adapter สำหรับแทนที่ Firebase ---
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyZWvNvzfp9szkXZ7aoFybNWTzszLysJpXGIQCmkShTHoWxeEnPRtfe3aiSYm_gL2fd/exec";
 
@@ -134,5 +139,5 @@ class Repository {
 const productRepo = new Repository("Products");
 const stockRepo = new Repository("Stock");
 const orderRepo = new Repository("Orders");
->>>>>>> d8ae4f21f72cef69d4c2fa0a93bb95a6246881d9
+d8ae4f21f72cef69d4c2fa0a93bb95a6246881d9
 const customerRepo = new Repository("Customers");
